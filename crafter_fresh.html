@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tier Crafter (Fresh)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    input {
+      width: 70px;
+      margin: 5px;
+      padding: 6px;
+      text-align: center;
+    }
+    button {
+      padding: 10px;
+      margin: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>🔥 Fresh Tier Crafter</h2>
+
+T1: <input id="t1" type="number" value="0"><br>
+T2: <input id="t2" type="number" value="0"><br>
+T3: <input id="t3" type="number" value="0"><br>
+T4: <input id="t4" type="number" value="0"><br>
+T5: <input id="t5" type="number" value="0"><br>
+
+<button onclick="craft()">Craft</button>
+
+<p id="out"></p>
+
+<script>
+alert("NEW JS IS RUNNING"); // 🔥 MUST show
+
+function craft() {
+  let t1 = Number(document.getElementById("t1").value) || 0;
+  let t2 = Number(document.getElementById("t2").value) || 0;
+
+  let made = Math.floor(t1 / 2);
+
+  document.getElementById("t2").value = t2 + made;
+  document.getElementById("t1").value = t1 - made * 2;
+
+  document.getElementById("out").innerText = "Crafted T2: " + made;
+}
+</script>
+
+</body>
+</html>
