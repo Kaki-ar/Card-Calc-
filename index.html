@@ -6,8 +6,7 @@
   <!-- PWA Meta -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0f172a">
-<meta name="theme-color" content="#0f172a">
-<link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="manifest" href="manifest.json">
 
   <style>
@@ -35,6 +34,103 @@
       margin-left: auto;
       margin-right: auto;
     }
+    td, th {
+      border: 1px solid #555;
+      padding: 6px 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>🎮 Tier Crafter</h2>
+
+T1: <input id="t1" type="number" value="0"><br>
+T2: <input id="t2" type="number" value="0"><br>
+T3: <input id="t3" type="number" value="0"><br>
+T4: <input id="t4" type="number" value="0"><br>
+T5: <input id="t5" type="number" value="0"><br>
+
+<button onclick="craft()">Craft Once</button>
+
+<div id="output"></div>
+
+<script>
+const output = document.getElementById("output");
+
+function getV() {
+  return {
+    t1: Number(document.getElementById("t1").value) || 0,
+    t2: Number(document.getElementById("t2").value) || 0,
+    t3: Number(document.getElementById("t3").value) || 0,
+    t4: Number(document.getElementById("t4").value) || 0,
+    t5: Number(document.getElementById("t5").value) || 0
+  };
+}
+
+function setV(v) {
+  document.getElementById("t1").value = v.t1;
+  document.getElementById("t2").value = v.t2;
+  document.getElementById("t3").value = v.t3;
+  document.getElementById("t4").value = v.t4;
+  document.getElementById("t5").value = v.t5;
+}
+
+function craft() {
+  let v = getV();
+
+  // store original values (no chaining)
+  let original = { ...v };
+
+  let made = { t2:0, t3:0, t4:0, t5:0, t6:0 };
+
+  // crafting logic
+  made.t2 = Math.floor(original.t1 / 2);
+  made.t3 = Math.floor(original.t2 / 3);
+  made.t4 = Math.floor(original.t3 / 4);
+  made.t5 = Math.floor(original.t4 / 5);
+  made.t6 = Math.floor(original.t5 / 6);
+
+  // subtract used
+  v.t1 -= made.t2 * 2;
+  v.t2 -= made.t3 * 3;
+  v.t3 -= made.t4 * 4;
+  v.t4 -= made.t5 * 5;
+  v.t5 -= made.t6 * 6;
+
+  // add crafted
+  v.t2 += made.t2;
+  v.t3 += made.t3;
+  v.t4 += made.t4;
+  v.t5 += made.t5;
+
+  // prevent negatives (extra safety)
+  v.t1 = Math.max(0, v.t1);
+  v.t2 = Math.max(0, v.t2);
+  v.t3 = Math.max(0, v.t3);
+  v.t4 = Math.max(0, v.t4);
+  v.t5 = Math.max(0, v.t5);
+
+  // update UI (THIS fixes your bug)
+  setV(v);
+
+  // show result
+  output.innerHTML = `
+    <h3>🛠 Crafted (Real Mode)</h3>
+    <table>
+      <tr><th>Tier</th><th>Made</th></tr>
+      <tr><td>T2</td><td>${made.t2}</td></tr>
+      <tr><td>T3</td><td>${made.t3}</td></tr>
+      <tr><td>T4</td><td>${made.t4}</td></tr>
+      <tr><td>T5</td><td>${made.t5}</td></tr>
+      <tr><td>T6</td><td>${made.t6}</td></tr>
+    </table>
+  `;
+}
+</script>
+
+</body>
+</html>    }
     td, th {
       border: 1px solid #555;
       padding: 6px 12px;
