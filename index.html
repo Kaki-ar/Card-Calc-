@@ -2,9 +2,7 @@
 <html>
 <head>
   <title>Tier Crafter</title>
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0f172a">
 
   <style>
     body {
@@ -27,14 +25,95 @@
     }
     table {
       border-collapse: collapse;
-      margin-top: 15px;
-      margin-left: auto;
-      margin-right: auto;
+      margin: 15px auto;
     }
     td, th {
       border: 1px solid #555;
       padding: 6px 12px;
     }
+  </style>
+</head>
+
+<body>
+
+<h2>🎮 Tier Crafter</h2>
+
+T1: <input id="t1" type="number" value="0"><br>
+T2: <input id="t2" type="number" value="0"><br>
+T3: <input id="t3" type="number" value="0"><br>
+T4: <input id="t4" type="number" value="0"><br>
+T5: <input id="t5" type="number" value="0"><br>
+
+<button onclick="craft()">Craft Once</button>
+
+<div id="output"></div>
+
+<script>
+// Read values
+function getV() {
+  return {
+    t1: Number(document.getElementById("t1").value) || 0,
+    t2: Number(document.getElementById("t2").value) || 0,
+    t3: Number(document.getElementById("t3").value) || 0,
+    t4: Number(document.getElementById("t4").value) || 0,
+    t5: Number(document.getElementById("t5").value) || 0
+  };
+}
+
+// Update inputs
+function setV(v) {
+  document.getElementById("t1").value = v.t1;
+  document.getElementById("t2").value = v.t2;
+  document.getElementById("t3").value = v.t3;
+  document.getElementById("t4").value = v.t4;
+  document.getElementById("t5").value = v.t5;
+}
+
+function craft() {
+  let o = getV(); // original snapshot
+
+  let made = {
+    t2: Math.floor(o.t1 / 2),
+    t3: Math.floor(o.t2 / 3),
+    t4: Math.floor(o.t3 / 4),
+    t5: Math.floor(o.t4 / 5),
+    t6: Math.floor(o.t5 / 6)
+  };
+
+  // FINAL values (no chaining bug)
+  let v = {
+    t1: o.t1 - made.t2 * 2,
+    t2: o.t2 - made.t3 * 3 + made.t2,
+    t3: o.t3 - made.t4 * 4 + made.t3,
+    t4: o.t4 - made.t5 * 5 + made.t4,
+    t5: o.t5 - made.t6 * 6 + made.t5
+  };
+
+  // prevent negatives
+  for (let k in v) {
+    v[k] = Math.max(0, v[k]);
+  }
+
+  // update UI
+  setV(v);
+
+  // show results
+  document.getElementById("output").innerHTML = `
+    <h3>🛠 Crafted</h3>
+    <table>
+      <tr><th>Tier</th><th>Made</th></tr>
+      <tr><td>T2</td><td>${made.t2}</td></tr>
+      <tr><td>T3</td><td>${made.t3}</td></tr>
+      <tr><td>T4</td><td>${made.t4}</td></tr>
+      <tr><td>T5</td><td>${made.t5}</td></tr>
+      <tr><td>T6</td><td>${made.t6}</td></tr>
+    </table>
+  `;
+}
+</script>
+
+</body>
+</html>    }
   </style>
 </head>
 
