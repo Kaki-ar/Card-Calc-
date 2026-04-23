@@ -3,11 +3,8 @@
 <head>
   <title>Tier Crafter</title>
 
-  <!-- PWA Meta -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0f172a">
-  <link rel="apple-touch-icon" href="icon-192.png">
-  <link rel="manifest" href="manifest.json">
 
   <style>
     body {
@@ -35,6 +32,77 @@
       margin-right: auto;
     }
     td, th {
+      border: 1px solid #555;
+      padding: 6px 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>🎮 Tier Crafter</h2>
+
+T1: <input id="t1" type="number" value="0"><br>
+T2: <input id="t2" type="number" value="0"><br>
+T3: <input id="t3" type="number" value="0"><br>
+T4: <input id="t4" type="number" value="0"><br>
+T5: <input id="t5" type="number" value="0"><br>
+
+<button onclick="craft()">Craft Once</button>
+
+<div id="output"></div>
+
+<script>
+function getV() {
+  return {
+    t1: Number(document.getElementById("t1").value) || 0,
+    t2: Number(document.getElementById("t2").value) || 0,
+    t3: Number(document.getElementById("t3").value) || 0,
+    t4: Number(document.getElementById("t4").value) || 0,
+    t5: Number(document.getElementById("t5").value) || 0
+  };
+}
+
+function resetAll() {
+  document.getElementById("t1").value = 0;
+  document.getElementById("t2").value = 0;
+  document.getElementById("t3").value = 0;
+  document.getElementById("t4").value = 0;
+  document.getElementById("t5").value = 0;
+}
+
+function craft() {
+  let v = getV();
+
+  let made = { t2:0, t3:0, t4:0, t5:0, t6:0 };
+
+  // simple craft (no chaining confusion)
+  made.t2 = Math.floor(v.t1 / 2);
+  made.t3 = Math.floor(v.t2 / 3);
+  made.t4 = Math.floor(v.t3 / 4);
+  made.t5 = Math.floor(v.t4 / 5);
+  made.t6 = Math.floor(v.t5 / 6);
+
+  // show result
+  document.getElementById("output").innerHTML = `
+    <h3>🛠 Crafted</h3>
+    <table>
+      <tr><th>Tier</th><th>Made</th></tr>
+      <tr><td>T2</td><td>${made.t2}</td></tr>
+      <tr><td>T3</td><td>${made.t3}</td></tr>
+      <tr><td>T4</td><td>${made.t4}</td></tr>
+      <tr><td>T5</td><td>${made.t5}</td></tr>
+      <tr><td>T6</td><td>${made.t6}</td></tr>
+    </table>
+  `;
+
+  // 🔥 reset everything (kills the bug completely)
+  resetAll();
+}
+</script>
+
+</body>
+</html>    td, th {
       border: 1px solid #555;
       padding: 6px 12px;
     }
