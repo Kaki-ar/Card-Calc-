@@ -58,48 +58,38 @@ T5: <input id="t5" type="number" value="0"><br>
 <div id="output"></div>
 
 <script>
-function getV() {
-  return {
-    t1: +t1.value || 0,
-    t2: +t2.value || 0,
-    t3: +t3.value || 0,
-    t4: +t4.value || 0,
-    t5: +t5.value || 0
-  };
-}
-
-function setV(v) {
-  t1.value = v.t1;
-  t2.value = v.t2;
-  t3.value = v.t3;
-  t4.value = v.t4;
-  t5.value = v.t5;
-}
-
 function craft() {
   let v = getV();
 
+  // Store ORIGINAL values (important)
+  let original = {...v};
+
   let made = {t2:0,t3:0,t4:0,t5:0,t6:0};
 
-  let m2 = Math.floor(v.t1/2);
-  v.t2 += m2; v.t1 -= m2*2; made.t2 = m2;
+  // Only use ORIGINAL values — no chaining
+  made.t2 = Math.floor(original.t1 / 2);
+  made.t3 = Math.floor(original.t2 / 3);
+  made.t4 = Math.floor(original.t3 / 4);
+  made.t5 = Math.floor(original.t4 / 5);
+  made.t6 = Math.floor(original.t5 / 6);
 
-  let m3 = Math.floor(v.t2/3);
-  v.t3 += m3; v.t2 -= m3*3; made.t3 = m3;
+  // Now subtract used resources
+  v.t1 -= made.t2 * 2;
+  v.t2 -= made.t3 * 3;
+  v.t3 -= made.t4 * 4;
+  v.t4 -= made.t5 * 5;
+  v.t5 -= made.t6 * 6;
 
-  let m4 = Math.floor(v.t3/4);
-  v.t4 += m4; v.t3 -= m4*4; made.t4 = m4;
-
-  let m5 = Math.floor(v.t4/5);
-  v.t5 += m5; v.t4 -= m5*5; made.t5 = m5;
-
-  let m6 = Math.floor(v.t5/6);
-  v.t5 -= m6*6; made.t6 = m6;
+  // Add crafted results
+  v.t2 += made.t2;
+  v.t3 += made.t3;
+  v.t4 += made.t4;
+  v.t5 += made.t5;
 
   setV(v);
 
   output.innerHTML = `
-    <h3>🛠 Crafted</h3>
+    <h3>🛠 Crafted (Real Mode)</h3>
     <table>
       <tr><th>Tier</th><th>Made</th></tr>
       <tr><td>T2</td><td>${made.t2}</td></tr>
@@ -109,25 +99,6 @@ function craft() {
       <tr><td>T6</td><td>${made.t6}</td></tr>
     </table>
   `;
-}
-
-function analyze() {
-  let v = getV();
-
-  output.innerHTML = `
-    <h3>📊 Analysis</h3>
-
-    T2 → Need 2 T1 | Have ${v.t1} | Can make ${Math.floor(v.t1/2)}<br>
-    T3 → Need 3 T2 | Have ${v.t2} | Can make ${Math.floor(v.t2/3)}<br>
-    T4 → Need 4 T3 | Have ${v.t3} | Can make ${Math.floor(v.t3/4)}<br>
-    T5 → Need 5 T4 | Have ${v.t4} | Can make ${Math.floor(v.t4/5)}<br>
-    T6 → Need 6 T5 | Have ${v.t5} | Can make ${Math.floor(v.t5/6)}<br>
-  `;
-}
-
-// Service worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js');
 }
 </script>
 
